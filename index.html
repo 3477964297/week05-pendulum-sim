@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>单摆物理模拟器 · Pendulum Lab</title>
+  <style>
+    :root {
+      --bg: #0b0b12;
+      --surface: #13131e;
+      --surface-2: #1a1a24;
+      --line: rgba(148, 163, 184, 0.14);
+      --line-strong: rgba(148, 163, 184, 0.28);
+      --text: #eef2f8;
+      --muted: #8b93a7;
+      --cyan: #5eead4;
+      --cyan-soft: rgba(94, 234, 212, 0.16);
+      --violet: #a78bfa;
+      --amber: #fbbf24;
+      --danger: #fb7185;
+      --radius: 18px;
+      --mono: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(1100px 620px at 18% -12%, rgba(94, 234, 212, 0.10), transparent 60%),
+        radial-gradient(900px 560px at 100% 0%, rgba(167, 139, 250, 0.10), transparent 62%),
+        var(--bg);
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at 50% 20%, #000 0%, transparent 78%);
+    }
+
+    .app {
+      position: relative;
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      padding: 28px clamp(18px, 3vw, 44px) 26px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand { display: flex; align-items: center; gap: 16px; min-width: 0; }
+
+    .brand-mark {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      flex: 0 0 auto;
+      border-radius: 15px;
+      border: 1px solid rgba(94, 234, 212, 0.35);
+      background: linear-gradient(145deg, rgba(94, 234, 212, 0.16), rgba(94, 234, 212, 0.03));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 12px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .brand-mark::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      width: 22px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: 24px;
+      width: 1px;
+      height: 22px;
+      background: linear-gradient(var(--cyan), rgba(94, 234, 212, 0.15));
+      transform-origin: top center;
+      transform: rotate(24deg);
+    }
+
+    .brand-mark i {
+      position: absolute;
+      top: 30px;
+      left: 31px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+    }
+
+    .eyebrow {
+      margin: 0 0 5px;
+      color: var(--cyan);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    h1 { margin: 0; font-size: clamp(24px, 2.4vw, 34px); letter-spacing: -0.02em; }
+
+    .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 38px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.02);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+    }
+
+    .status-pill i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse { 50% { opacity: 0.35; } }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      height: 38px;
+      padding: 0 16px;
+      border: 1px solid var(--line-strong);
+      border-radius: 10px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.045);
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .btn:hover { border-color: rgba(94, 234, 212, 0.55); background: rgba(94, 234, 212, 0.09); }
+    .btn:active { transform: translateY(1px); }
+    .btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 18px;
+      margin-top: 22px;
+      align-items: start;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012));
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.36);
+      overflow: hidden;
+    }
+
+    .stage-card { padding: 14px; }
+
+    .stage-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 2px 4px 13px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+    }
+
+    .stage-head .live { color: var(--cyan); }
+
+    .canvas-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      min-height: 400px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      background: #0f0f18;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    .canvas-wrap:active { cursor: grabbing; }
+
+    canvas { display: block; width: 100%; height: 100%; }
+
+    .hud {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(84px, 1fr));
+      gap: 1px;
+      width: 236px;
+      border: 1px solid rgba(148, 163, 184, 0.13);
+      border-radius: 11px;
+      overflow: hidden;
+      background: rgba(148, 163, 184, 0.10);
+      backdrop-filter: blur(12px);
+    }
+
+    .hud-cell { padding: 9px 11px 10px; background: rgba(11, 11, 18, 0.78); }
+
+    .hud-label {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .hud-value { font-family: var(--mono); font-size: 16px; font-variant-numeric: tabular-nums; }
+    .hud-value small { color: var(--muted); font-size: 10px; }
+
+    .hint {
+      position: absolute;
+      right: 16px;
+      bottom: 14px;
+      color: rgba(203, 213, 225, 0.55);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+    }
+
+    .side { display: grid; gap: 16px; }
+
+    .panel-card { padding: 18px; }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 0 15px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .panel-title span:last-child {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+    }
+
+    .formula {
+      margin-top: 16px;
+      padding: 12px 13px;
+      border: 1px dashed rgba(148, 163, 184, 0.20);
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.75;
+    }
+
+    .formula b { color: var(--text); font-family: var(--mono); font-weight: 500; }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .shortcuts { display: flex; gap: 14px; flex-wrap: wrap; font-family: var(--mono); font-size: 10px; }
+    kbd {
+      display: inline-block;
+      min-width: 20px;
+      padding: 2px 5px;
+      border: 1px solid var(--line-strong);
+      border-bottom-color: rgba(148, 163, 184, 0.45);
+      border-radius: 4px;
+      color: #cbd5e1;
+      background: rgba(255, 255, 255, 0.05);
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 9px;
+    }
+
+    @media (max-width: 1040px) {
+      .layout { grid-template-columns: 1fr; }
+      .side { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      .app { padding: 18px 14px 20px; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .top-actions { justify-content: flex-start; }
+      .brand-mark { width: 44px; height: 44px; }
+      .canvas-wrap { min-height: 340px; aspect-ratio: 4 / 5; }
+      .hud { width: 200px; }
+      .hint { display: none; }
+      .side { grid-template-columns: 1fr; }
+      footer { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><i></i></div>
+        <div>
+          <p class="eyebrow">Interactive Physics · Week 05</p>
+          <h1>单摆物理模拟器</h1>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span class="status-pill" id="statusPill"><i></i><span id="statusText">RUNNING</span></span>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="card stage-card">
+        <div class="stage-head">
+          <span>SIMULATION VIEWPORT</span>
+          <span class="live" id="fpsLabel">60 FPS</span>
+        </div>
+        <div class="canvas-wrap" id="canvasWrap">
+          <canvas id="stage" role="img" aria-label="单摆物理模拟画布"></canvas>
+          <div class="hud">
+            <div class="hud-cell">
+              <span class="hud-label">摆角 θ</span>
+              <span class="hud-value" id="hudAngle">45.0<small>°</small></span>
+            </div>
+            <div class="hud-cell">
+              <span class="hud-label">角速度 ω</span>
+              <span class="hud-value" id="hudOmega">0.00<small> rad/s</small></span>
+            </div>
+            <div class="hud-cell">
+              <span class="hud-label">理论周期 T</span>
+              <span class="hud-value" id="hudPeriod">0.90<small> s</small></span>
+            </div>
+            <div class="hud-cell">
+              <span class="hud-label">机械能 E</span>
+              <span class="hud-value" id="hudEnergy">57.4<small> a.u.</small></span>
+            </div>
+          </div>
+          <div class="hint">拖拽摆球可改变初始角度</div>
+        </div>
+      </section>
+
+      <aside class="side">
+        <section class="card panel-card">
+          <h2 class="panel-title"><span>物理模型</span><span>MODEL</span></h2>
+          <div class="formula">
+            <b>α = −(g / L)·sin θ − k·ω</b><br>
+            四阶 Runge–Kutta 数值积分 · 固定步长 240 Hz<br>
+            重力按 100 px / m 映射至画面尺度
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <footer>
+      <span>HOTL · 人在回路之上 —— 人类定义意图，AI 完成实现</span>
+      <div class="shortcuts">
+        <span><kbd>Space</kbd> 暂停</span>
+        <span><kbd>R</kbd> 重置</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const canvas = document.getElementById("stage");
+      const ctx = canvas.getContext("2d");
+      const wrap = document.getElementById("canvasWrap");
+      const hudAngle = document.getElementById("hudAngle");
+      const hudOmega = document.getElementById("hudOmega");
+      const hudPeriod = document.getElementById("hudPeriod");
+      const hudEnergy = document.getElementById("hudEnergy");
+      const fpsLabel = document.getElementById("fpsLabel");
+      const statusText = document.getElementById("statusText");
+      const statusPill = document.getElementById("statusPill");
+
+      const DEG = Math.PI / 180;
+      const FIXED_DT = 1 / 240;
+      const GRAVITY_SCALE = 100;
+      const DAMPING_GAIN = 12;
+
+      const sim = {
+        L: 200,
+        g: 9.8,
+        k: 0.0015,
+        theta: 45 * DEG,
+        omega: 0,
+        paused: false
+      };
+
+      let width = 0;
+      let height = 0;
+      let dpr = 1;
+      let pivot = { x: 0, y: 0 };
+      let stars = [];
+      let trail = [];
+      let lastTime = performance.now();
+      let accumulator = 0;
+      let fpsFrames = 0;
+      let fpsTime = 0;
+      let hudClock = 0;
+
+      function seededRandom(seed) {
+        let value = seed >>> 0;
+        return () => {
+          value = (value * 1664525 + 1013904223) >>> 0;
+          return value / 4294967296;
+        };
+      }
+
+      function makeStars() {
+        const random = seededRandom(20261001);
+        const count = Math.round((width * height) / 16000);
+        stars = Array.from({ length: count }, () => ({
+          x: random() * width,
+          y: random() * height,
+          r: 0.35 + random() * 1.1,
+          alpha: 0.06 + random() * 0.22
+        }));
+      }
+
+      function resize() {
+        const rect = wrap.getBoundingClientRect();
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = Math.max(1, rect.width);
+        height = Math.max(1, rect.height);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        pivot = { x: width * 0.5, y: Math.max(74, height * 0.17) };
+        makeStars();
+      }
+
+      function bobPosition(theta) {
+        return {
+          x: pivot.x + Math.sin(theta) * sim.L,
+          y: pivot.y + Math.cos(theta) * sim.L
+        };
+      }
+
+      function acceleration(theta, omega) {
+        const gravity = sim.g * GRAVITY_SCALE;
+        return -(gravity / sim.L) * Math.sin(theta) - sim.k * DAMPING_GAIN * omega;
+      }
+
+      function integrate(dt) {
+        const theta = sim.theta;
+        const omega = sim.omega;
+
+        const a1 = acceleration(theta, omega);
+        const a2 = acceleration(theta + omega * dt * 0.5, omega + a1 * dt * 0.5);
+        const a3 = acceleration(theta + (omega + a2 * dt * 0.5) * dt * 0.5, omega + a2 * dt * 0.5);
+        const a4 = acceleration(theta + (omega + a3 * dt) * dt, omega + a3 * dt);
+
+        sim.theta += (dt / 6) * (omega + 2 * (omega + a1 * dt * 0.5) + 2 * (omega + a2 * dt * 0.5) + (omega + a3 * dt));
+        sim.omega += (dt / 6) * (a1 + 2 * a2 + 2 * a3 + a4);
+      }
+
+      function period() {
+        const gravity = sim.g * GRAVITY_SCALE;
+        return 2 * Math.PI * Math.sqrt(sim.L / gravity);
+      }
+
+      function energy() {
+        const v = sim.L * sim.omega;
+        return (0.5 * v * v + sim.g * GRAVITY_SCALE * sim.L * (1 - Math.cos(sim.theta))) / 1000;
+      }
+
+      function line(x1, y1, x2, y2, color, size) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = size;
+        ctx.stroke();
+      }
+
+      function drawBackdrop() {
+        const bg = ctx.createLinearGradient(0, 0, 0, height);
+        bg.addColorStop(0, "#11111b");
+        bg.addColorStop(0.55, "#0e0e17");
+        bg.addColorStop(1, "#0a0a11");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, width, height);
+
+        const glow = ctx.createRadialGradient(pivot.x, pivot.y, 0, pivot.x, pivot.y, Math.max(width, height) * 0.6);
+        glow.addColorStop(0, "rgba(94, 234, 212, 0.085)");
+        glow.addColorStop(0.45, "rgba(94, 234, 212, 0.022)");
+        glow.addColorStop(1, "rgba(94, 234, 212, 0)");
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.fillStyle = "#dbeafe";
+        for (const star of stars) {
+          ctx.globalAlpha = star.alpha;
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.055)";
+        ctx.lineWidth = 1;
+        const gap = 48;
+        for (let x = (width * 0.5) % gap; x < width; x += gap) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, height);
+          ctx.stroke();
+        }
+        for (let y = (height * 0.5) % gap; y < height; y += gap) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+      }
+
+      function drawCeiling() {
+        const beamWidth = 132;
+        const beam = ctx.createLinearGradient(pivot.x - beamWidth / 2, 0, pivot.x + beamWidth / 2, 0);
+        beam.addColorStop(0, "rgba(148, 163, 184, 0.06)");
+        beam.addColorStop(0.5, "rgba(203, 213, 225, 0.30)");
+        beam.addColorStop(1, "rgba(148, 163, 184, 0.06)");
+        ctx.fillStyle = beam;
+        ctx.fillRect(pivot.x - beamWidth / 2, pivot.y - 7, beamWidth, 3);
+
+        ctx.save();
+        ctx.shadowColor = "rgba(94, 234, 212, 0.8)";
+        ctx.shadowBlur = 16;
+        ctx.fillStyle = "#0f172a";
+        ctx.beginPath();
+        ctx.arc(pivot.x, pivot.y, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(94, 234, 212, 0.9)";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.fillStyle = "rgba(94, 234, 212, 0.9)";
+        ctx.beginPath();
+        ctx.arc(pivot.x, pivot.y, 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      function drawAngleGuide(bob) {
+        ctx.save();
+        ctx.setLineDash([4, 6]);
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.26)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(pivot.x, pivot.y);
+        ctx.lineTo(pivot.x, pivot.y + sim.L + 28);
+        ctx.stroke();
+        ctx.restore();
+
+        const radius = Math.min(60, sim.L * 0.34);
+        ctx.beginPath();
+        ctx.arc(pivot.x, pivot.y, radius, Math.PI / 2 - sim.theta, Math.PI / 2, sim.theta < 0);
+        ctx.strokeStyle = "rgba(251, 191, 36, 0.62)";
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        const mid = Math.PI / 2 - sim.theta / 2;
+        const labelX = pivot.x + Math.cos(mid) * (radius + 17);
+        const labelY = pivot.y + Math.sin(mid) * (radius + 17);
+        ctx.fillStyle = "rgba(251, 191, 36, 0.92)";
+        ctx.font = "500 10px 'Cascadia Code', Consolas, monospace";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("θ", labelX, labelY);
+
+        const lengthY = pivot.y + sim.L * 0.55;
+        ctx.fillStyle = "rgba(203, 213, 225, 0.45)";
+        ctx.font = "9px 'Cascadia Code', Consolas, monospace";
+        ctx.textAlign = "left";
+        ctx.fillText(`${Math.round(sim.L)} px`, pivot.x + 7, lengthY);
+        ctx.beginPath();
+        ctx.arc(bob.x, bob.y, 4, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.2)";
+        ctx.stroke();
+      }
+
+      function drawTrail() {
+        if (trail.length < 2) return;
+        for (let i = 1; i < trail.length; i += 1) {
+          const point = trail[i];
+          const alpha = (i / trail.length) * 0.22;
+          ctx.beginPath();
+          ctx.moveTo(trail[i - 1].x, trail[i - 1].y);
+          ctx.lineTo(point.x, point.y);
+          ctx.strokeStyle = `rgba(94, 234, 212, ${alpha.toFixed(3)})`;
+          ctx.lineWidth = 1.4;
+          ctx.stroke();
+        }
+      }
+
+      function drawPendulum() {
+        const bob = bobPosition(sim.theta);
+
+        drawTrail();
+        drawAngleGuide(bob);
+
+        const rod = ctx.createLinearGradient(pivot.x, pivot.y, bob.x, bob.y);
+        rod.addColorStop(0, "rgba(226, 232, 240, 0.82)");
+        rod.addColorStop(1, "rgba(148, 163, 184, 0.62)");
+        ctx.save();
+        ctx.shadowColor = "rgba(94, 234, 212, 0.42)";
+        ctx.shadowBlur = 9;
+        line(pivot.x, pivot.y, bob.x, bob.y, rod, 2.2);
+        ctx.restore();
+
+        const radius = 17;
+        const halo = ctx.createRadialGradient(bob.x, bob.y, 0, bob.x, bob.y, radius * 4.2);
+        halo.addColorStop(0, "rgba(94, 234, 212, 0.32)");
+        halo.addColorStop(0.35, "rgba(94, 234, 212, 0.11)");
+        halo.addColorStop(1, "rgba(94, 234, 212, 0)");
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(bob.x, bob.y, radius * 4.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        const ball = ctx.createRadialGradient(bob.x - 6, bob.y - 7, 1, bob.x, bob.y, radius);
+        ball.addColorStop(0, "#ffffff");
+        ball.addColorStop(0.18, "#d9fff8");
+        ball.addColorStop(0.55, "#5eead4");
+        ball.addColorStop(1, "#0f766e");
+        ctx.fillStyle = ball;
+        ctx.beginPath();
+        ctx.arc(bob.x, bob.y, radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = "rgba(236, 254, 255, 0.65)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        const speed = Math.abs(sim.omega);
+        if (speed > 0.08) {
+          const vx = Math.cos(sim.theta) * sim.omega * sim.L * 0.20;
+          const vy = -Math.sin(sim.theta) * sim.omega * sim.L * 0.20;
+          const scale = Math.max(0.35, Math.min(1, speed / 2.2));
+          const ex = bob.x + vx * scale;
+          const ey = bob.y + vy * scale;
+          line(bob.x, bob.y, ex, ey, "rgba(251, 191, 36, 0.62)", 1.4);
+          ctx.fillStyle = "rgba(251, 191, 36, 0.8)";
+          ctx.beginPath();
+          ctx.arc(ex, ey, 2.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function draw() {
+        drawBackdrop();
+        drawCeiling();
+        drawPendulum();
+      }
+
+      function updateHud(dt) {
+        hudClock += dt;
+        if (hudClock < 0.05) return;
+        hudClock = 0;
+        hudAngle.innerHTML = `${(sim.theta / DEG).toFixed(1)}<small>°</small>`;
+        hudOmega.innerHTML = `${sim.omega.toFixed(2)}<small> rad/s</small>`;
+        hudPeriod.innerHTML = `${period().toFixed(2)}<small> s</small>`;
+        hudEnergy.innerHTML = `${energy().toFixed(1)}<small> a.u.</small>`;
+      }
+
+      function frame(now) {
+        const elapsed = Math.min((now - lastTime) / 1000, 0.05);
+        lastTime = now;
+
+        if (!sim.paused) {
+          accumulator += elapsed;
+          let steps = 0;
+          while (accumulator >= FIXED_DT && steps < 16) {
+            integrate(FIXED_DT);
+            accumulator -= FIXED_DT;
+            steps += 1;
+          }
+          if (steps === 16) accumulator = 0;
+
+          const bob = bobPosition(sim.theta);
+          trail.push(bob);
+          if (trail.length > 90) trail.shift();
+        }
+
+        draw();
+        updateHud(elapsed);
+
+        fpsFrames += 1;
+        fpsTime += elapsed;
+        if (fpsTime >= 0.5) {
+          fpsLabel.textContent = `${Math.round(fpsFrames / fpsTime)} FPS`;
+          fpsFrames = 0;
+          fpsTime = 0;
+        }
+
+        requestAnimationFrame(frame);
+      }
+
+      function setPaused(paused) {
+        sim.paused = paused;
+        statusText.textContent = paused ? "PAUSED" : "RUNNING";
+        statusPill.style.color = paused ? "var(--amber)" : "var(--muted)";
+      }
+
+      function resetSimulation() {
+        sim.theta = 45 * DEG;
+        sim.omega = 0;
+        accumulator = 0;
+        trail = [];
+        setPaused(false);
+      }
+
+      window.addEventListener("keydown", (event) => {
+        if (event.code === "Space") {
+          event.preventDefault();
+          setPaused(!sim.paused);
+        }
+        if (event.key === "r" || event.key === "R") {
+          resetSimulation();
+        }
+      });
+
+      new ResizeObserver(resize).observe(wrap);
+      resize();
+      requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>
