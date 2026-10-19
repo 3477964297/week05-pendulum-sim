@@ -499,7 +499,7 @@
             </div>
           </div>
           <div class="panel-actions">
-            <button class="btn btn-primary" id="btnReset" type="button" onclick="resetAnimation()">重置摆动</button>
+            <button class="btn btn-primary" id="btnReset" type="button">重置摆动</button>
             <button class="btn" id="btnPauseBottom" type="button">暂停</button>
           </div>
         </section>
@@ -540,6 +540,7 @@
       const statusPill = document.getElementById("statusPill");
       const btnPause = document.getElementById("btnPause");
       const btnPauseBottom = document.getElementById("btnPauseBottom");
+      const btnReset = document.getElementById("btnReset");
       const lengthSlider = document.getElementById("lengthSlider");
       const gravitySlider = document.getElementById("gravitySlider");
       const dampingSlider = document.getElementById("dampingSlider");
@@ -917,6 +918,20 @@
 
       btnPause.addEventListener("click", () => setPaused(!sim.paused));
       btnPauseBottom.addEventListener("click", () => setPaused(!sim.paused));
+      btnReset.addEventListener("click", resetSimulation);
+
+      window.pendulumLab = Object.freeze({
+        getState: () => ({
+          length: sim.L,
+          gravity: sim.g,
+          damping: sim.k,
+          angleDeg: sim.theta / DEG,
+          omega: sim.omega,
+          paused: sim.paused
+        }),
+        reset: resetSimulation,
+        setPaused
+      });
 
       window.addEventListener("keydown", (event) => {
         if (event.code === "Space") {
