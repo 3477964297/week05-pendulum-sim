@@ -178,7 +178,8 @@ de314e0 feat(week05): init pendulum experiment workspace
 0899ab4 fix: resolve reset button runtime error
 9869162 feat: add dual pendulum, presets and persistence
 0a874a3 fix: correct dual pendulum energy accounting
-docs: complete human-AI reflection and advanced features
+f14b150 docs: complete human-AI reflection and advanced features
+style: align canvas background with course palette
 ```
 
 ## 七、GitHub 作品集
