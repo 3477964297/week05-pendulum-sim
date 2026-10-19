@@ -185,6 +185,7 @@ docs: make reflection trace match actual iteration
 - GitHub 账号：`3477964297`
 - 作品集仓库：https://github.com/3477964297/week05-pendulum-sim
 - 默认分支：`main`
+- 同步状态：已执行 `git push -u origin main`，远端 `main` 已建立
 
 ```bash
 git remote add origin https://github.com/3477964297/week05-pendulum-sim.git
@@ -211,5 +212,5 @@ week05_pendulum_sim/
 - [x] 单摆 / 双摆切换、拖拽、天体预设、相空间、持久化均可用；
 - [x] README 已完整填写“人机协同三反思”；
 - [x] Git 提交历史不少于 3 次，且每次提交主题清晰；
-- [x] 已填写实际 GitHub 仓库地址并准备执行 `git push`；
+- [x] 已执行 `git push`，仓库已同步到 GitHub `main` 分支；
 - [x] 按 `pendulum_6108126015罗运诚.zip` 重命名最终 Zip。
