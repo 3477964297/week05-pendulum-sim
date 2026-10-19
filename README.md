@@ -1,6 +1,6 @@
 # 第 5 周实验 · 单摆物理模拟器
 
-> **实验者：** ________（学号）　________（姓名）  
+> **实验者：** 6108126015（学号）　罗运诚（姓名）　自动化 261 班  
 > **课程：** 人机协同程序设计 · 意图造物与 ReAct 闭环编程  
 > **协作方式：** HOTL（Human-on-the-loop）· 人类定义意图与验收，AI 完成实现与重复劳动
 
@@ -167,7 +167,7 @@ DPR 适配和 `getBoundingClientRect()` 拖拽坐标在实现时一次通过，�
 
 ## 六、Git 提交历史
 
-本仓库按“基线 → 交互 → 自愈 → 进阶 → 修正 → 文档”的顺序真实迭代，当前 `main` 分支包含以下提交（可用 `git log --oneline` 查看完整记录）：
+本仓库按“基线 → 交互 → 自愈 → 进阶 → 修正 → 文档”的顺序真实迭代，主要提交如下（最新一次为署名与仓库链接更新，完整记录可用 `git log --oneline` 查看）：
 
 ```text
 de314e0 feat(week05): init pendulum experiment workspace
@@ -182,13 +182,12 @@ docs: make reflection trace match actual iteration
 
 ## 七、GitHub 作品集
 
-> 本地仓库与提交历史已就绪。将下面两处占位符替换为实际账号后，即可同步到个人作品集：
-
-- GitHub 账号：`<github-username>`
-- 作品集仓库：`https://github.com/<github-username>/week05-pendulum-sim`
+- GitHub 账号：`3477964297`
+- 作品集仓库：https://github.com/3477964297/week05-pendulum-sim
+- 默认分支：`main`
 
 ```bash
-git remote add origin https://github.com/<github-username>/week05-pendulum-sim.git
+git remote add origin https://github.com/3477964297/week05-pendulum-sim.git
 git push -u origin main
 ```
 
@@ -212,5 +211,5 @@ week05_pendulum_sim/
 - [x] 单摆 / 双摆切换、拖拽、天体预设、相空间、持久化均可用；
 - [x] README 已完整填写“人机协同三反思”；
 - [x] Git 提交历史不少于 3 次，且每次提交主题清晰；
-- [ ] 将 `<github-username>` 替换为实际账号并执行 `git push`（需要本机 GitHub 凭据）；
-- [ ] 按“学号姓名”重命名最终 Zip 并提交学习通。
+- [x] 已填写实际 GitHub 仓库地址并准备执行 `git push`；
+- [x] 按 `pendulum_6108126015罗运诚.zip` 重命名最终 Zip。
