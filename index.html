@@ -956,7 +956,7 @@
           const l2 = (sim.L * 0.72) / GRAVITY_SCALE;
           const kinetic = 0.5 * (l1 * sim.w1) ** 2
             + 0.5 * ((l1 * sim.w1) ** 2 + (l2 * sim.w2) ** 2 + 2 * l1 * l2 * sim.w1 * sim.w2 * Math.cos(sim.t1 - sim.t2));
-          const potential = sim.g * (l1 * (1 - Math.cos(sim.t1)) + l2 * (1 - Math.cos(sim.t2)));
+          const potential = sim.g * (2 * l1 * (1 - Math.cos(sim.t1)) + l2 * (1 - Math.cos(sim.t2)));
           return kinetic + potential;
         }
         const velocity = l1 * sim.omega;
@@ -1716,6 +1716,8 @@
           angle2Deg: sim.t2 / DEG,
           omega1: sim.w1,
           omega2: sim.w2,
+          energy: energy(),
+          period: period(),
           paused: sim.paused
         }),
         reset: resetSimulation,
