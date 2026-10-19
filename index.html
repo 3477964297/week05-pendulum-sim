@@ -80,36 +80,12 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 12px 30px rgba(0, 0, 0, 0.35);
     }
 
-    .brand-mark::before {
-      content: "";
-      position: absolute;
-      top: 10px;
-      width: 22px;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.35);
-    }
-
-    .brand-mark::after {
-      content: "";
-      position: absolute;
-      top: 10px;
-      left: 24px;
-      width: 1px;
-      height: 22px;
-      background: linear-gradient(var(--cyan), rgba(94, 234, 212, 0.15));
-      transform-origin: top center;
-      transform: rotate(24deg);
-    }
-
-    .brand-mark i {
-      position: absolute;
-      top: 30px;
-      left: 31px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--cyan);
-      box-shadow: 0 0 12px var(--cyan);
+    .brand-mark svg {
+      width: 30px;
+      height: 30px;
+      overflow: visible;
+      color: #ccfbf1;
+      filter: drop-shadow(0 0 7px rgba(94, 234, 212, 0.55));
     }
 
     .eyebrow {
@@ -204,6 +180,56 @@
 
     .stage-head .live { color: var(--cyan); }
 
+    .mode-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 4px 12px;
+    }
+
+    .segmented {
+      display: inline-flex;
+      gap: 3px;
+      padding: 3px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .seg-btn {
+      height: 28px;
+      padding: 0 13px;
+      border: 0;
+      border-radius: 7px;
+      color: var(--muted);
+      background: transparent;
+      font: inherit;
+      font-size: 11px;
+      cursor: pointer;
+      transition: color 160ms ease, background 160ms ease;
+    }
+
+    .seg-btn:hover { color: var(--text); }
+
+    .seg-btn.active {
+      color: #06211d;
+      background: linear-gradient(180deg, #99f6e4, #5eead4);
+      font-weight: 600;
+    }
+
+    .mode-badges { display: flex; gap: 8px; }
+
+    .micro-badge {
+      padding: 4px 8px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.10em;
+    }
+
     .canvas-wrap {
       position: relative;
       width: 100%;
@@ -259,6 +285,34 @@
       font-size: 11px;
       letter-spacing: 0.04em;
     }
+
+    .stage-notes {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: 13px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--line);
+    }
+
+    .stage-note {
+      display: flex;
+      gap: 9px;
+      padding: 11px 12px;
+      background: rgba(13, 13, 22, 0.72);
+    }
+
+    .stage-note > span {
+      color: var(--cyan);
+      font-family: var(--mono);
+      font-size: 8px;
+      line-height: 1.6;
+    }
+
+    .stage-note p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.55; }
+    .stage-note b { display: block; margin-bottom: 2px; color: #dbe3ef; font-size: 11px; font-weight: 600; }
 
     .side { display: grid; gap: 16px; }
 
@@ -368,6 +422,97 @@
 
     .btn-primary:hover { background: linear-gradient(180deg, #b7fdf0, #6ff0dc); border-color: #99f6e4; }
 
+    .preset-block {
+      margin-top: 20px;
+      padding-top: 17px;
+      border-top: 1px solid var(--line);
+    }
+
+    .preset-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 11px;
+      color: #dbe3ef;
+      font-size: 12px;
+    }
+
+    .preset-head span:last-child {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.12em;
+    }
+
+    .preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+
+    .preset-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 34px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: #cbd5e1;
+      background: rgba(255, 255, 255, 0.025);
+      font: inherit;
+      font-size: 11px;
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+    }
+
+    .preset-btn:hover { border-color: rgba(94, 234, 212, 0.42); }
+
+    .preset-btn.active {
+      border-color: rgba(94, 234, 212, 0.58);
+      color: var(--cyan);
+      background: var(--cyan-soft);
+    }
+
+    .preset-dot {
+      width: 8px;
+      height: 8px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--planet, #94a3b8);
+      box-shadow: 0 0 8px color-mix(in srgb, var(--planet, #94a3b8) 70%, transparent);
+    }
+
+    .preset-btn small {
+      margin-left: auto;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 8px;
+    }
+
+    .phase-wrap {
+      position: relative;
+      width: 100%;
+      height: 158px;
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #0c0c14;
+    }
+
+    .phase-note {
+      margin: 10px 1px 0;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .save-state {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.12em;
+      transition: color 180ms ease;
+    }
+
+    .save-state.saved { color: var(--cyan); }
+
     .range-scale {
       display: flex;
       justify-content: space-between;
@@ -415,8 +560,11 @@
       .brand-mark { width: 44px; height: 44px; }
       .canvas-wrap { min-height: 340px; aspect-ratio: 4 / 5; }
       .hud { width: 200px; }
+      .hud-value { font-size: 14px; }
+      .hud-value small { font-size: 9px; }
       .hint { display: none; }
       .side { grid-template-columns: 1fr; }
+      .stage-notes { grid-template-columns: 1fr; }
       footer { align-items: flex-start; flex-direction: column; }
     }
   </style>
@@ -425,7 +573,14 @@
   <div class="app">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-mark" aria-hidden="true"><i></i></div>
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+            <path d="M5 4h14" opacity=".55"></path>
+            <path d="M12 4 17.2 15.4"></path>
+            <circle cx="12" cy="4" r="1.7" fill="currentColor" stroke="none"></circle>
+            <circle cx="18" cy="16.8" r="3.4" fill="#5eead4" stroke="none"></circle>
+          </svg>
+        </div>
         <div>
           <p class="eyebrow">Interactive Physics · Week 05</p>
           <h1>单摆物理模拟器</h1>
@@ -443,33 +598,57 @@
           <span>SIMULATION VIEWPORT</span>
           <span class="live" id="fpsLabel">60 FPS</span>
         </div>
+        <div class="mode-row">
+          <div class="segmented" role="tablist" aria-label="模拟模式">
+            <button class="seg-btn active" id="modeSingle" type="button" role="tab" aria-selected="true">单摆</button>
+            <button class="seg-btn" id="modeDual" type="button" role="tab" aria-selected="false">双摆混沌</button>
+          </div>
+          <div class="mode-badges">
+            <span class="micro-badge">RK4</span>
+            <span class="micro-badge">240 HZ</span>
+          </div>
+        </div>
         <div class="canvas-wrap" id="canvasWrap">
           <canvas id="stage" role="img" aria-label="单摆物理模拟画布"></canvas>
           <div class="hud">
             <div class="hud-cell">
-              <span class="hud-label">摆角 θ</span>
+              <span class="hud-label" id="hudAngleLabel">摆角 θ</span>
               <span class="hud-value" id="hudAngle">45.0<small>°</small></span>
             </div>
             <div class="hud-cell">
-              <span class="hud-label">角速度 ω</span>
+              <span class="hud-label" id="hudOmegaLabel">角速度 ω</span>
               <span class="hud-value" id="hudOmega">0.00<small> rad/s</small></span>
             </div>
             <div class="hud-cell">
-              <span class="hud-label">理论周期 T</span>
+              <span class="hud-label" id="hudPeriodLabel">理论周期 T</span>
               <span class="hud-value" id="hudPeriod">0.90<small> s</small></span>
             </div>
             <div class="hud-cell">
-              <span class="hud-label">机械能 E</span>
-              <span class="hud-value" id="hudEnergy">57.4<small> a.u.</small></span>
+              <span class="hud-label" id="hudEnergyLabel">机械能 E</span>
+              <span class="hud-value" id="hudEnergy">5.7<small> J</small></span>
             </div>
           </div>
-          <div class="hint">拖拽摆球可改变初始角度</div>
+          <div class="hint" id="canvasHint">拖拽摆球可改变初始角度</div>
+        </div>
+        <div class="stage-notes">
+          <div class="stage-note">
+            <span>01</span>
+            <p><b>角度约定</b>θ 从竖直向下方向量起，逆时针为正。</p>
+          </div>
+          <div class="stage-note">
+            <span>02</span>
+            <p><b>能量观察</b>阻尼增大时，振幅与机械能同步衰减。</p>
+          </div>
+          <div class="stage-note">
+            <span>03</span>
+            <p><b>混沌判据</b>双摆相轨迹对初值差异呈指数级放大。</p>
+          </div>
         </div>
       </section>
 
       <aside class="side">
         <section class="card panel-card">
-          <h2 class="panel-title"><span>参数控制</span><span>LIVE TUNING</span></h2>
+          <h2 class="panel-title"><span>参数控制</span><span class="save-state" id="saveState">AUTO-SAVE</span></h2>
           <div class="control-stack">
             <div class="slider-row">
               <div class="slider-top">
@@ -485,7 +664,7 @@
                 <label class="slider-name" for="gravitySlider">重力加速度 <small>g</small></label>
                 <output class="slider-value" id="gravityValue" for="gravitySlider">9.8 m/s²</output>
               </div>
-              <input id="gravitySlider" type="range" min="1" max="25" step="0.1" value="9.8">
+              <input id="gravitySlider" type="range" min="1" max="25" step="0.01" value="9.8">
               <div class="range-scale"><span>1</span><span>25</span></div>
             </div>
 
@@ -498,6 +677,25 @@
               <div class="range-scale"><span>0.000</span><span>0.010</span></div>
             </div>
           </div>
+
+          <div class="preset-block">
+            <div class="preset-head"><span>天体场景</span><span>SMOOTH GRAVITY</span></div>
+            <div class="preset-grid" id="presetGrid">
+              <button class="preset-btn active" type="button" data-preset="earth" aria-pressed="true">
+                <i class="preset-dot" style="--planet:#38bdf8"></i>地球<small>9.8</small>
+              </button>
+              <button class="preset-btn" type="button" data-preset="moon" aria-pressed="false">
+                <i class="preset-dot" style="--planet:#cbd5e1"></i>月球<small>1.62</small>
+              </button>
+              <button class="preset-btn" type="button" data-preset="jupiter" aria-pressed="false">
+                <i class="preset-dot" style="--planet:#f59e0b"></i>木星<small>24.79</small>
+              </button>
+              <button class="preset-btn" type="button" data-preset="space" aria-pressed="false">
+                <i class="preset-dot" style="--planet:#a78bfa"></i>太空<small>1.0</small>
+              </button>
+            </div>
+          </div>
+
           <div class="panel-actions">
             <button class="btn btn-primary" id="btnReset" type="button">重置摆动</button>
             <button class="btn" id="btnPauseBottom" type="button">暂停</button>
@@ -509,14 +707,23 @@
           <div class="formula">
             <b>α = −(g / L)·sin θ − k·ω</b><br>
             四阶 Runge–Kutta 数值积分 · 固定步长 240 Hz<br>
+            双摆：拉格朗日耦合方程 · 四维状态 [θ₁, ω₁, θ₂, ω₂]<br>
             重力按 100 px / m 映射至画面尺度
           </div>
+        </section>
+
+        <section class="card panel-card">
+          <h2 class="panel-title"><span>相空间轨迹</span><span>θ — ω</span></h2>
+          <div class="phase-wrap">
+            <canvas id="phase" role="img" aria-label="摆角与角速度相空间轨迹"></canvas>
+          </div>
+          <p class="phase-note" id="phaseNote">轨迹在相平面中不断缠绕而不相交，是双摆混沌与能量交换的直接证据。</p>
         </section>
       </aside>
     </main>
 
     <footer>
-      <span>HOTL · 人在回路之上 —— 人类定义意图，AI 完成实现</span>
+      <span>HOTL · 人在回路之上 —— 参数自动保存至 localStorage</span>
       <div class="shortcuts">
         <span><kbd>Space</kbd> 暂停</span>
         <span><kbd>R</kbd> 重置</span>
@@ -531,10 +738,17 @@
       const canvas = document.getElementById("stage");
       const ctx = canvas.getContext("2d");
       const wrap = document.getElementById("canvasWrap");
+      const phaseCanvas = document.getElementById("phase");
+      const pctx = phaseCanvas.getContext("2d");
+      const phaseWrap = phaseCanvas.parentElement;
       const hudAngle = document.getElementById("hudAngle");
       const hudOmega = document.getElementById("hudOmega");
       const hudPeriod = document.getElementById("hudPeriod");
       const hudEnergy = document.getElementById("hudEnergy");
+      const hudAngleLabel = document.getElementById("hudAngleLabel");
+      const hudOmegaLabel = document.getElementById("hudOmegaLabel");
+      const hudPeriodLabel = document.getElementById("hudPeriodLabel");
+      const hudEnergyLabel = document.getElementById("hudEnergyLabel");
       const fpsLabel = document.getElementById("fpsLabel");
       const statusText = document.getElementById("statusText");
       const statusPill = document.getElementById("statusPill");
@@ -547,27 +761,59 @@
       const lengthValue = document.getElementById("lengthValue");
       const gravityValue = document.getElementById("gravityValue");
       const dampingValue = document.getElementById("dampingValue");
+      const modeSingle = document.getElementById("modeSingle");
+      const modeDual = document.getElementById("modeDual");
+      const presetGrid = document.getElementById("presetGrid");
+      const saveState = document.getElementById("saveState");
+      const canvasHint = document.getElementById("canvasHint");
+      const phaseNote = document.getElementById("phaseNote");
 
       const DEG = Math.PI / 180;
       const FIXED_DT = 1 / 240;
       const GRAVITY_SCALE = 100;
       const DAMPING_GAIN = 12;
+      const STORAGE_KEY = "pendulum-lab:v1";
+
+      const PRESETS = {
+        earth: { label: "地球", g: 9.8, k: 0.0015 },
+        moon: { label: "月球", g: 1.62, k: 0.0006 },
+        jupiter: { label: "木星", g: 24.79, k: 0.0035 },
+        space: { label: "太空", g: 1.0, k: 0 }
+      };
 
       const sim = {
+        mode: "single",
         L: 200,
         g: 9.8,
         k: 0.0015,
         theta: 45 * DEG,
         omega: 0,
+        t1: 78 * DEG,
+        w1: 0,
+        t2: 112 * DEG,
+        w2: 0,
         paused: false
+      };
+
+      const ui = {
+        dragging: null,
+        activePreset: "earth",
+        gTween: null,
+        kTween: null,
+        saveTimer: 0,
+        savedTimer: 0
       };
 
       let width = 0;
       let height = 0;
       let dpr = 1;
+      let phaseWidth = 0;
+      let phaseHeight = 0;
+      let phaseDpr = 1;
       let pivot = { x: 0, y: 0 };
       let stars = [];
       let trail = [];
+      let phaseHistory = [];
       let lastTime = performance.now();
       let accumulator = 0;
       let fpsFrames = 0;
@@ -605,6 +851,16 @@
         makeStars();
       }
 
+      function resizePhase() {
+        const rect = phaseWrap.getBoundingClientRect();
+        phaseDpr = Math.min(window.devicePixelRatio || 1, 2);
+        phaseWidth = Math.max(1, rect.width);
+        phaseHeight = Math.max(1, rect.height);
+        phaseCanvas.width = Math.round(phaseWidth * phaseDpr);
+        phaseCanvas.height = Math.round(phaseHeight * phaseDpr);
+        pctx.setTransform(phaseDpr, 0, 0, phaseDpr, 0, 0);
+      }
+
       function bobPosition(theta) {
         return {
           x: pivot.x + Math.sin(theta) * sim.L,
@@ -612,32 +868,99 @@
         };
       }
 
-      function acceleration(theta, omega) {
+      function secondBobPosition() {
+        const first = bobPosition(sim.t1);
+        const length = sim.L * 0.72;
+        return {
+          x: first.x + Math.sin(sim.t2) * length,
+          y: first.y + Math.cos(sim.t2) * length
+        };
+      }
+
+      function singleAcceleration(theta, omega) {
         const gravity = sim.g * GRAVITY_SCALE;
         return -(gravity / sim.L) * Math.sin(theta) - sim.k * DAMPING_GAIN * omega;
       }
 
-      function integrate(dt) {
+      function integrateSingle(dt) {
         const theta = sim.theta;
         const omega = sim.omega;
 
-        const a1 = acceleration(theta, omega);
-        const a2 = acceleration(theta + omega * dt * 0.5, omega + a1 * dt * 0.5);
-        const a3 = acceleration(theta + (omega + a2 * dt * 0.5) * dt * 0.5, omega + a2 * dt * 0.5);
-        const a4 = acceleration(theta + (omega + a3 * dt) * dt, omega + a3 * dt);
+        const a1 = singleAcceleration(theta, omega);
+        const a2 = singleAcceleration(theta + omega * dt * 0.5, omega + a1 * dt * 0.5);
+        const a3 = singleAcceleration(theta + (omega + a2 * dt * 0.5) * dt * 0.5, omega + a2 * dt * 0.5);
+        const a4 = singleAcceleration(theta + (omega + a3 * dt) * dt, omega + a3 * dt);
 
         sim.theta += (dt / 6) * (omega + 2 * (omega + a1 * dt * 0.5) + 2 * (omega + a2 * dt * 0.5) + (omega + a3 * dt));
         sim.omega += (dt / 6) * (a1 + 2 * a2 + 2 * a3 + a4);
       }
 
+      function dualDerivatives(state) {
+        const [t1, w1, t2, w2] = state;
+        const m1 = 1;
+        const m2 = 1;
+        const l1 = sim.L / GRAVITY_SCALE;
+        const l2 = (sim.L * 0.72) / GRAVITY_SCALE;
+        const g = sim.g;
+        const delta = t1 - t2;
+        const denom = 2 * m1 + m2 - m2 * Math.cos(2 * delta);
+
+        const a1 = (
+          -g * (2 * m1 + m2) * Math.sin(t1)
+          - m2 * g * Math.sin(t1 - 2 * t2)
+          - 2 * Math.sin(delta) * m2 * (w2 * w2 * l2 + w1 * w1 * l1 * Math.cos(delta))
+        ) / (l1 * denom) - sim.k * DAMPING_GAIN * w1;
+
+        const a2 = (
+          2 * Math.sin(delta) * (
+            w1 * w1 * l1 * (m1 + m2)
+            + g * (m1 + m2) * Math.cos(t1)
+            + w2 * w2 * l2 * m2 * Math.cos(delta)
+          )
+        ) / (l2 * denom) - sim.k * DAMPING_GAIN * w2;
+
+        return [w1, a1, w2, a2];
+      }
+
+      function integrateDual(dt) {
+        const state = [sim.t1, sim.w1, sim.t2, sim.w2];
+        const k1 = dualDerivatives(state);
+        const k2 = dualDerivatives(state.map((value, index) => value + k1[index] * dt * 0.5));
+        const k3 = dualDerivatives(state.map((value, index) => value + k2[index] * dt * 0.5));
+        const k4 = dualDerivatives(state.map((value, index) => value + k3[index] * dt));
+
+        sim.t1 += (dt / 6) * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]);
+        sim.w1 += (dt / 6) * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1]);
+        sim.t2 += (dt / 6) * (k1[2] + 2 * k2[2] + 2 * k3[2] + k4[2]);
+        sim.w2 += (dt / 6) * (k1[3] + 2 * k2[3] + 2 * k3[3] + k4[3]);
+      }
+
+      function integrate(dt) {
+        if (sim.mode === "dual") {
+          integrateDual(dt);
+        } else {
+          integrateSingle(dt);
+        }
+      }
+
       function period() {
-        const gravity = sim.g * GRAVITY_SCALE;
-        return 2 * Math.PI * Math.sqrt(sim.L / gravity);
+        if (sim.mode === "dual") {
+          return 2 * Math.PI * Math.sqrt((sim.L / GRAVITY_SCALE) / sim.g);
+        }
+        return 2 * Math.PI * Math.sqrt(sim.L / (sim.g * GRAVITY_SCALE));
       }
 
       function energy() {
-        const v = sim.L * sim.omega;
-        return (0.5 * v * v + sim.g * GRAVITY_SCALE * sim.L * (1 - Math.cos(sim.theta))) / 1000;
+        const l1 = sim.L / GRAVITY_SCALE;
+        if (sim.mode === "dual") {
+          const l2 = (sim.L * 0.72) / GRAVITY_SCALE;
+          const kinetic = 0.5 * (l1 * sim.w1) ** 2
+            + 0.5 * ((l1 * sim.w1) ** 2 + (l2 * sim.w2) ** 2 + 2 * l1 * l2 * sim.w1 * sim.w2 * Math.cos(sim.t1 - sim.t2));
+          const potential = sim.g * (l1 * (1 - Math.cos(sim.t1)) + l2 * (1 - Math.cos(sim.t2)));
+          return kinetic + potential;
+        }
+        const velocity = l1 * sim.omega;
+        return 0.5 * velocity * velocity + sim.g * l1 * (1 - Math.cos(sim.theta));
       }
 
       function line(x1, y1, x2, y2, color, size) {
@@ -757,6 +1080,21 @@
 
       function drawTrail() {
         if (trail.length < 2) return;
+        if (sim.mode === "dual") {
+          for (let i = 1; i < trail.length; i += 1) {
+            const ratio = i / trail.length;
+            const point = trail[i];
+            const previous = trail[i - 1];
+            const hue = 168 + ratio * 155;
+            ctx.beginPath();
+            ctx.moveTo(previous.x, previous.y);
+            ctx.lineTo(point.x, point.y);
+            ctx.strokeStyle = `hsla(${hue.toFixed(0)}, 92%, 68%, ${(0.06 + ratio * 0.62).toFixed(3)})`;
+            ctx.lineWidth = 0.9 + ratio * 2.3;
+            ctx.stroke();
+          }
+          return;
+        }
         for (let i = 1; i < trail.length; i += 1) {
           const point = trail[i];
           const alpha = (i / trail.length) * 0.22;
@@ -769,7 +1107,122 @@
         }
       }
 
+      function drawGlowBall(x, y, radius, palette, glow) {
+        const halo = ctx.createRadialGradient(x, y, 0, x, y, radius * 4.1);
+        halo.addColorStop(0, glow.replace("ALPHA", "0.30"));
+        halo.addColorStop(0.38, glow.replace("ALPHA", "0.10"));
+        halo.addColorStop(1, glow.replace("ALPHA", "0"));
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(x, y, radius * 4.1, 0, Math.PI * 2);
+        ctx.fill();
+
+        const ball = ctx.createRadialGradient(x - radius * 0.35, y - radius * 0.4, 1, x, y, radius);
+        ball.addColorStop(0, "#ffffff");
+        ball.addColorStop(0.2, palette[0]);
+        ball.addColorStop(0.58, palette[1]);
+        ball.addColorStop(1, palette[2]);
+        ctx.fillStyle = ball;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.55)";
+        ctx.lineWidth = 0.9;
+        ctx.stroke();
+      }
+
+      function drawDualAngleGuide(first, second) {
+        ctx.save();
+        ctx.setLineDash([4, 6]);
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.22)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(pivot.x, pivot.y);
+        ctx.lineTo(pivot.x, pivot.y + sim.L * 1.72 + 28);
+        ctx.stroke();
+
+        ctx.strokeStyle = "rgba(94, 234, 212, 0.24)";
+        ctx.beginPath();
+        ctx.moveTo(first.x, first.y);
+        ctx.lineTo(first.x, first.y + sim.L * 0.72 + 24);
+        ctx.stroke();
+        ctx.restore();
+
+        const radius1 = Math.min(62, sim.L * 0.34);
+        ctx.beginPath();
+        ctx.arc(pivot.x, pivot.y, radius1, Math.PI / 2 - sim.t1, Math.PI / 2, sim.t1 < 0);
+        ctx.strokeStyle = "rgba(94, 234, 212, 0.6)";
+        ctx.lineWidth = 1.1;
+        ctx.stroke();
+
+        const mid1 = Math.PI / 2 - sim.t1 / 2;
+        ctx.fillStyle = "rgba(153, 246, 228, 0.88)";
+        ctx.font = "500 10px 'Cascadia Code', Consolas, monospace";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("θ₁", pivot.x + Math.cos(mid1) * (radius1 + 17), pivot.y + Math.sin(mid1) * (radius1 + 17));
+
+        const radius2 = Math.min(48, sim.L * 0.26);
+        ctx.beginPath();
+        ctx.arc(first.x, first.y, radius2, Math.PI / 2 - sim.t2, Math.PI / 2, sim.t2 < 0);
+        ctx.strokeStyle = "rgba(244, 114, 182, 0.55)";
+        ctx.stroke();
+        const mid2 = Math.PI / 2 - sim.t2 / 2;
+        ctx.fillStyle = "rgba(249, 168, 212, 0.9)";
+        ctx.fillText("θ₂", first.x + Math.cos(mid2) * (radius2 + 16), first.y + Math.sin(mid2) * (radius2 + 16));
+
+        ctx.fillStyle = "rgba(203, 213, 225, 0.4)";
+        ctx.font = "9px 'Cascadia Code', Consolas, monospace";
+        ctx.textAlign = "left";
+        ctx.fillText(`L₁ ${Math.round(sim.L)}px`, pivot.x + 7, pivot.y + sim.L * 0.55);
+        ctx.fillText(`L₂ ${Math.round(sim.L * 0.72)}px`, first.x + 7, first.y + sim.L * 0.3);
+      }
+
+      function drawDual() {
+        const first = bobPosition(sim.t1);
+        const second = secondBobPosition();
+
+        drawTrail();
+        drawDualAngleGuide(first, second);
+
+        ctx.save();
+        ctx.shadowColor = "rgba(94, 234, 212, 0.4)";
+        ctx.shadowBlur = 8;
+        line(pivot.x, pivot.y, first.x, first.y, "rgba(226, 232, 240, 0.82)", 2.2);
+        ctx.restore();
+
+        ctx.save();
+        ctx.shadowColor = "rgba(244, 114, 182, 0.45)";
+        ctx.shadowBlur = 10;
+        line(first.x, first.y, second.x, second.y, "rgba(226, 232, 240, 0.68)", 1.8);
+        ctx.restore();
+
+        drawGlowBall(first.x, first.y, 13.5, ["#d9fff8", "#5eead4", "#0f766e"], "rgba(94, 234, 212, ALPHA)");
+        drawGlowBall(second.x, second.y, 15.5, ["#fdf2f8", "#f472b6", "#9d174d"], "rgba(244, 114, 182, ALPHA)");
+
+        const speed = Math.hypot(sim.w1, sim.w2);
+        if (speed > 0.1) {
+          const scale = Math.min(34, speed * 16);
+          const angle = Math.atan2(
+            -Math.sin(sim.t1) * sim.w1 - Math.sin(sim.t2) * sim.w2,
+            Math.cos(sim.t1) * sim.w1 + Math.cos(sim.t2) * sim.w2
+          );
+          const ex = second.x + Math.cos(angle) * scale;
+          const ey = second.y + Math.sin(angle) * scale;
+          line(second.x, second.y, ex, ey, "rgba(251, 191, 36, 0.55)", 1.2);
+          ctx.fillStyle = "rgba(251, 191, 36, 0.75)";
+          ctx.beginPath();
+          ctx.arc(ex, ey, 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
       function drawPendulum() {
+        if (sim.mode === "dual") {
+          drawDual();
+          return;
+        }
+
         const bob = bobPosition(sim.theta);
 
         drawTrail();
@@ -785,28 +1238,7 @@
         ctx.restore();
 
         const radius = 17;
-        const halo = ctx.createRadialGradient(bob.x, bob.y, 0, bob.x, bob.y, radius * 4.2);
-        halo.addColorStop(0, "rgba(94, 234, 212, 0.32)");
-        halo.addColorStop(0.35, "rgba(94, 234, 212, 0.11)");
-        halo.addColorStop(1, "rgba(94, 234, 212, 0)");
-        ctx.fillStyle = halo;
-        ctx.beginPath();
-        ctx.arc(bob.x, bob.y, radius * 4.2, 0, Math.PI * 2);
-        ctx.fill();
-
-        const ball = ctx.createRadialGradient(bob.x - 6, bob.y - 7, 1, bob.x, bob.y, radius);
-        ball.addColorStop(0, "#ffffff");
-        ball.addColorStop(0.18, "#d9fff8");
-        ball.addColorStop(0.55, "#5eead4");
-        ball.addColorStop(1, "#0f766e");
-        ctx.fillStyle = ball;
-        ctx.beginPath();
-        ctx.arc(bob.x, bob.y, radius, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.strokeStyle = "rgba(236, 254, 255, 0.65)";
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        drawGlowBall(bob.x, bob.y, radius, ["#d9fff8", "#5eead4", "#0f766e"], "rgba(94, 234, 212, ALPHA)");
 
         const speed = Math.abs(sim.omega);
         if (speed > 0.08) {
@@ -829,21 +1261,149 @@
         drawPendulum();
       }
 
+      function wrappedAngle(angle) {
+        return Math.atan2(Math.sin(angle), Math.cos(angle));
+      }
+
+      function samplePhase() {
+        const x = sim.mode === "dual" ? sim.t1 : sim.theta;
+        const y = sim.mode === "dual" ? sim.w1 : sim.omega;
+        phaseHistory.push({ x: wrappedAngle(x), y });
+        if (phaseHistory.length > 620) phaseHistory.shift();
+      }
+
+      function drawPhase() {
+        const w = phaseWidth;
+        const h = phaseHeight;
+        const padX = 25;
+        const padY = 17;
+        const plotW = w - padX * 2;
+        const plotH = h - padY * 2;
+
+        pctx.clearRect(0, 0, w, h);
+        const bg = pctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.65);
+        bg.addColorStop(0, "#10101b");
+        bg.addColorStop(1, "#0b0b12");
+        pctx.fillStyle = bg;
+        pctx.fillRect(0, 0, w, h);
+
+        let maxOmega = 4;
+        for (const point of phaseHistory) {
+          maxOmega = Math.max(maxOmega, Math.abs(point.y));
+        }
+        maxOmega = Math.min(14, maxOmega * 1.18);
+
+        const mapX = (theta) => padX + ((theta + Math.PI) / (Math.PI * 2)) * plotW;
+        const mapY = (omega) => padY + ((maxOmega - omega) / (maxOmega * 2)) * plotH;
+
+        pctx.strokeStyle = "rgba(148, 163, 184, 0.10)";
+        pctx.lineWidth = 1;
+        for (const theta of [-Math.PI, -Math.PI / 2, 0, Math.PI / 2, Math.PI]) {
+          pctx.beginPath();
+          pctx.moveTo(mapX(theta), padY);
+          pctx.lineTo(mapX(theta), h - padY);
+          pctx.stroke();
+        }
+        for (const omega of [-maxOmega, 0, maxOmega]) {
+          pctx.beginPath();
+          pctx.moveTo(padX, mapY(omega));
+          pctx.lineTo(w - padX, mapY(omega));
+          pctx.stroke();
+        }
+
+        pctx.strokeStyle = "rgba(148, 163, 184, 0.22)";
+        pctx.beginPath();
+        pctx.moveTo(mapX(0), padY);
+        pctx.lineTo(mapX(0), h - padY);
+        pctx.moveTo(padX, mapY(0));
+        pctx.lineTo(w - padX, mapY(0));
+        pctx.stroke();
+
+        pctx.fillStyle = "rgba(139, 147, 167, 0.72)";
+        pctx.font = "8px 'Cascadia Code', Consolas, monospace";
+        pctx.textAlign = "left";
+        pctx.fillText("−π", 4, h - 5);
+        pctx.textAlign = "right";
+        pctx.fillText("π", w - 5, h - 5);
+        pctx.textAlign = "center";
+        pctx.fillText("θ", w * 0.5, h - 4);
+        pctx.textAlign = "left";
+        pctx.fillText("ω", 5, 10);
+
+        if (phaseHistory.length > 1) {
+          const hueBase = sim.mode === "dual" ? 315 : 172;
+          for (let i = 1; i < phaseHistory.length; i += 1) {
+            const ratio = i / phaseHistory.length;
+            const previous = phaseHistory[i - 1];
+            const point = phaseHistory[i];
+            pctx.beginPath();
+            pctx.moveTo(mapX(previous.x), mapY(previous.y));
+            pctx.lineTo(mapX(point.x), mapY(point.y));
+            pctx.strokeStyle = `hsla(${hueBase}, 88%, 68%, ${(0.04 + ratio * 0.55).toFixed(3)})`;
+            pctx.lineWidth = 0.7 + ratio * 1.3;
+            pctx.stroke();
+          }
+
+          const last = phaseHistory[phaseHistory.length - 1];
+          const lx = mapX(last.x);
+          const ly = mapY(last.y);
+          pctx.save();
+          pctx.shadowBlur = 12;
+          pctx.shadowColor = sim.mode === "dual" ? "#f472b6" : "#5eead4";
+          pctx.fillStyle = sim.mode === "dual" ? "#f9a8d4" : "#99f6e4";
+          pctx.beginPath();
+          pctx.arc(lx, ly, 2.7, 0, Math.PI * 2);
+          pctx.fill();
+          pctx.restore();
+        }
+      }
+
       function updateHud(dt) {
         hudClock += dt;
         if (hudClock < 0.05) return;
         hudClock = 0;
-        hudAngle.innerHTML = `${(sim.theta / DEG).toFixed(1)}<small>°</small>`;
-        hudOmega.innerHTML = `${sim.omega.toFixed(2)}<small> rad/s</small>`;
+        const angle = sim.mode === "dual" ? sim.t1 : sim.theta;
+        const omega = sim.mode === "dual" ? sim.w1 : sim.omega;
+        hudAngle.innerHTML = `${(angle / DEG).toFixed(1)}<small>°</small>`;
+        hudOmega.innerHTML = `${omega.toFixed(2)}<small> rad/s</small>`;
         hudPeriod.innerHTML = `${period().toFixed(2)}<small> s</small>`;
-        hudEnergy.innerHTML = `${energy().toFixed(1)}<small> a.u.</small>`;
+        hudEnergy.innerHTML = `${energy().toFixed(2)}<small> J</small>`;
+      }
+
+      function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - ((-2 * t + 2) ** 3) / 2;
+      }
+
+      function updateTweens(now) {
+        let changed = false;
+        if (ui.gTween) {
+          const ratio = Math.min(1, (now - ui.gTween.start) / ui.gTween.duration);
+          sim.g = ui.gTween.from + (ui.gTween.to - ui.gTween.from) * easeInOutCubic(ratio);
+          gravitySlider.value = sim.g.toFixed(2);
+          gravityValue.textContent = `${sim.g.toFixed(2)} m/s²`;
+          fillTrack(gravitySlider);
+          changed = true;
+          if (ratio >= 1) ui.gTween = null;
+        }
+        if (ui.kTween) {
+          const ratio = Math.min(1, (now - ui.kTween.start) / ui.kTween.duration);
+          sim.k = ui.kTween.from + (ui.kTween.to - ui.kTween.from) * easeInOutCubic(ratio);
+          dampingSlider.value = sim.k.toFixed(4);
+          dampingValue.textContent = sim.k.toFixed(4);
+          fillTrack(dampingSlider);
+          changed = true;
+          if (ratio >= 1) ui.kTween = null;
+        }
+        return changed;
       }
 
       function frame(now) {
         const elapsed = Math.min((now - lastTime) / 1000, 0.05);
         lastTime = now;
 
-        if (!sim.paused) {
+        updateTweens(now);
+
+        if (!sim.paused && ui.dragging === null) {
           accumulator += elapsed;
           let steps = 0;
           while (accumulator >= FIXED_DT && steps < 16) {
@@ -853,12 +1413,14 @@
           }
           if (steps === 16) accumulator = 0;
 
-          const bob = bobPosition(sim.theta);
-          trail.push(bob);
-          if (trail.length > 90) trail.shift();
+          const point = sim.mode === "dual" ? secondBobPosition() : bobPosition(sim.theta);
+          trail.push(point);
+          if (trail.length > (sim.mode === "dual" ? 170 : 90)) trail.shift();
+          samplePhase();
         }
 
         draw();
+        drawPhase();
         updateHud(elapsed);
 
         fpsFrames += 1;
@@ -881,11 +1443,23 @@
       }
 
       function resetSimulation() {
-        sim.theta = 45 * DEG;
-        sim.omega = 0;
+        if (sim.mode === "dual") {
+          sim.t1 = 78 * DEG;
+          sim.w1 = 0;
+          sim.t2 = 112 * DEG;
+          sim.w2 = 0;
+          canvasHint.textContent = "拖拽任一摆球可改变对应摆角 · 双摆对初值极度敏感";
+        } else {
+          sim.theta = 45 * DEG;
+          sim.omega = 0;
+          canvasHint.textContent = "拖拽摆球可改变初始角度";
+        }
         accumulator = 0;
         trail = [];
+        phaseHistory = [];
         setPaused(false);
+        hudClock = 1;
+        updateHud(0);
       }
 
       function fillTrack(input) {
@@ -905,46 +1479,276 @@
         update();
       }
 
+      function clamp(value, min, max) {
+        return Math.min(max, Math.max(min, value));
+      }
+
+      function updateModeUI() {
+        const dual = sim.mode === "dual";
+        modeSingle.classList.toggle("active", !dual);
+        modeDual.classList.toggle("active", dual);
+        modeSingle.setAttribute("aria-selected", String(!dual));
+        modeDual.setAttribute("aria-selected", String(dual));
+        hudAngleLabel.textContent = dual ? "摆角 θ₁" : "摆角 θ";
+        hudOmegaLabel.textContent = dual ? "角速度 ω₁" : "角速度 ω";
+        hudPeriodLabel.textContent = dual ? "小角度周期 T" : "理论周期 T";
+        hudEnergyLabel.textContent = dual ? "系统总能量 E" : "机械能 E";
+        canvasHint.textContent = dual
+          ? "拖拽任一摆球可改变对应摆角 · 双摆对初值极度敏感"
+          : "拖拽摆球可改变初始角度";
+        phaseNote.textContent = dual
+          ? "θ₁ — ω₁ 相轨迹不断缠绕，对初始角度的微小差异会迅速放大，这是双摆混沌的直接证据。"
+          : "单摆在相平面中形成闭合环线；加入阻尼后环线向原点螺旋收缩，直观呈现能量耗散。";
+        hudClock = 1;
+        updateHud(0);
+      }
+
+      function setMode(mode, options = {}) {
+        const next = mode === "dual" ? "dual" : "single";
+        if (next === sim.mode) {
+          updateModeUI();
+          return;
+        }
+        sim.mode = next;
+        accumulator = 0;
+        trail = [];
+        phaseHistory = [];
+        if (next === "dual") {
+          sim.t1 = 78 * DEG;
+          sim.w1 = 0;
+          sim.t2 = 112 * DEG;
+          sim.w2 = 0;
+        } else {
+          sim.theta = 45 * DEG;
+          sim.omega = 0;
+        }
+        setPaused(false);
+        updateModeUI();
+        if (options.save !== false) scheduleSave(80);
+      }
+
+      function updatePresetUI() {
+        for (const button of presetGrid.querySelectorAll("[data-preset]")) {
+          const active = button.dataset.preset === ui.activePreset;
+          button.classList.toggle("active", active);
+          button.setAttribute("aria-pressed", String(active));
+        }
+      }
+
+      function setPreset(name, animate = true, persist = true) {
+        const preset = PRESETS[name];
+        if (!preset) return;
+        ui.activePreset = name;
+        updatePresetUI();
+        const now = performance.now();
+        if (animate) {
+          ui.gTween = { from: sim.g, to: preset.g, start: now, duration: 900 };
+          ui.kTween = { from: sim.k, to: preset.k, start: now, duration: 900 };
+        } else {
+          sim.g = preset.g;
+          sim.k = preset.k;
+          gravitySlider.value = sim.g.toFixed(2);
+          dampingSlider.value = sim.k.toFixed(4);
+          gravityValue.textContent = `${sim.g.toFixed(2)} m/s²`;
+          dampingValue.textContent = sim.k.toFixed(4);
+          fillTrack(gravitySlider);
+          fillTrack(dampingSlider);
+        }
+        if (persist) scheduleSave(animate ? 980 : 60);
+      }
+
+      function saveSettings() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            version: 1,
+            mode: sim.mode,
+            L: sim.L,
+            g: sim.g,
+            k: sim.k,
+            preset: ui.activePreset
+          }));
+        } catch (error) {
+          // localStorage 在部分隐私模式下不可用，模拟器仍保持完整功能。
+        }
+        saveState.textContent = "SAVED";
+        saveState.classList.add("saved");
+        clearTimeout(ui.savedTimer);
+        ui.savedTimer = setTimeout(() => {
+          saveState.textContent = "AUTO-SAVE";
+          saveState.classList.remove("saved");
+        }, 1100);
+      }
+
+      function scheduleSave(delay = 180) {
+        clearTimeout(ui.saveTimer);
+        ui.saveTimer = setTimeout(saveSettings, delay);
+      }
+
+      function loadSettings() {
+        let data = null;
+        try {
+          data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+        } catch (error) {
+          data = null;
+        }
+        if (!data || data.version !== 1) return;
+        sim.mode = data.mode === "dual" ? "dual" : "single";
+        sim.L = clamp(Number(data.L) || 200, 100, 350);
+        sim.g = clamp(Number(data.g) || 9.8, 1, 25);
+        sim.k = clamp(Number(data.k) || 0, 0, 0.01);
+        ui.activePreset = PRESETS[data.preset] ? data.preset : null;
+        lengthSlider.value = String(sim.L);
+        gravitySlider.value = sim.g.toFixed(2);
+        dampingSlider.value = sim.k.toFixed(4);
+      }
+
+      function pointerPoint(event) {
+        const rect = canvas.getBoundingClientRect();
+        return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+      }
+
+      function hitTest(point) {
+        const targets = sim.mode === "dual"
+          ? [
+              { index: 0, pos: bobPosition(sim.t1), radius: 32 },
+              { index: 1, pos: secondBobPosition(), radius: 34 }
+            ]
+          : [{ index: 0, pos: bobPosition(sim.theta), radius: 34 }];
+        for (const target of targets) {
+          if (Math.hypot(point.x - target.pos.x, point.y - target.pos.y) <= target.radius) {
+            return target.index;
+          }
+        }
+        return null;
+      }
+
+      function dragTo(index, point) {
+        if (sim.mode === "single") {
+          sim.theta = Math.atan2(point.x - pivot.x, point.y - pivot.y);
+          sim.omega = 0;
+        } else if (index === 0) {
+          sim.t1 = Math.atan2(point.x - pivot.x, point.y - pivot.y);
+          sim.w1 = 0;
+        } else {
+          const first = bobPosition(sim.t1);
+          sim.t2 = Math.atan2(point.x - first.x, point.y - first.y);
+          sim.w2 = 0;
+        }
+        trail = [];
+        phaseHistory = [];
+        hudClock = 1;
+        updateHud(0);
+      }
+
+      loadSettings();
+
       bindSlider(lengthSlider, lengthValue, (value) => `${value.toFixed(0)} px`, (value) => {
         sim.L = value;
         trail = [];
       });
-      bindSlider(gravitySlider, gravityValue, (value) => `${value.toFixed(1)} m/s²`, (value) => {
+      bindSlider(gravitySlider, gravityValue, (value) => `${value.toFixed(2)} m/s²`, (value) => {
         sim.g = value;
       });
       bindSlider(dampingSlider, dampingValue, (value) => value.toFixed(4), (value) => {
         sim.k = value;
       });
 
+      for (const input of [lengthSlider, gravitySlider, dampingSlider]) {
+        input.addEventListener("input", () => {
+          ui.gTween = null;
+          ui.kTween = null;
+          ui.activePreset = null;
+          updatePresetUI();
+          scheduleSave();
+        });
+      }
+
+      modeSingle.addEventListener("click", () => setMode("single"));
+      modeDual.addEventListener("click", () => setMode("dual"));
+
+      presetGrid.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-preset]");
+        if (button) setPreset(button.dataset.preset);
+      });
+
       btnPause.addEventListener("click", () => setPaused(!sim.paused));
       btnPauseBottom.addEventListener("click", () => setPaused(!sim.paused));
       btnReset.addEventListener("click", resetSimulation);
 
+      canvas.addEventListener("pointerdown", (event) => {
+        const point = pointerPoint(event);
+        const index = hitTest(point);
+        if (index === null) return;
+        event.preventDefault();
+        ui.dragging = index;
+        canvas.setPointerCapture?.(event.pointerId);
+        accumulator = 0;
+        dragTo(index, point);
+      });
+
+      canvas.addEventListener("pointermove", (event) => {
+        if (ui.dragging === null) return;
+        event.preventDefault();
+        dragTo(ui.dragging, pointerPoint(event));
+      });
+
+      const finishDrag = (event) => {
+        if (ui.dragging === null) return;
+        ui.dragging = null;
+        accumulator = 0;
+        if (canvas.hasPointerCapture?.(event.pointerId)) {
+          canvas.releasePointerCapture(event.pointerId);
+        }
+        setPaused(false);
+      };
+      canvas.addEventListener("pointerup", finishDrag);
+      canvas.addEventListener("pointercancel", finishDrag);
+
       window.pendulumLab = Object.freeze({
         getState: () => ({
+          mode: sim.mode,
           length: sim.L,
           gravity: sim.g,
           damping: sim.k,
           angleDeg: sim.theta / DEG,
           omega: sim.omega,
+          angle1Deg: sim.t1 / DEG,
+          angle2Deg: sim.t2 / DEG,
+          omega1: sim.w1,
+          omega2: sim.w2,
           paused: sim.paused
         }),
         reset: resetSimulation,
-        setPaused
+        setPaused,
+        setMode,
+        setPreset
       });
 
       window.addEventListener("keydown", (event) => {
-        if (event.code === "Space") {
+        const tag = event.target.tagName;
+        const editing = tag === "INPUT" || tag === "BUTTON" || tag === "TEXTAREA" || tag === "SELECT";
+        if (event.code === "Space" && !editing) {
           event.preventDefault();
           setPaused(!sim.paused);
         }
         if (event.key === "r" || event.key === "R") {
           resetSimulation();
         }
+        if (event.key === "d" || event.key === "D") {
+          setMode(sim.mode === "dual" ? "single" : "dual");
+        }
+        const presetKeys = { "1": "earth", "2": "moon", "3": "jupiter", "4": "space" };
+        if (presetKeys[event.key]) {
+          setPreset(presetKeys[event.key]);
+        }
       });
 
       new ResizeObserver(resize).observe(wrap);
+      new ResizeObserver(resizePhase).observe(phaseWrap);
       resize();
+      resizePhase();
+      updateModeUI();
+      updatePresetUI();
       requestAnimationFrame(frame);
     })();
   </script>
